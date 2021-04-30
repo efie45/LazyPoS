@@ -2,6 +2,7 @@ function Sort-VSCodeSettings {
     [Cmdletbinding()]
     param(
         [Parameter()]
+        [ValidateScript( { Test-Path $_ })]
         $SettingsPath,
 
         [Parameter()]
@@ -14,7 +15,7 @@ function Sort-VSCodeSettings {
         if ($IsWindows) { "$env:APPDATA\Code\User\settings.json" }
         if ($IsLinux) { "$HOME/.config/Code/User/settings.json" }
     )
-    if($warning){ $warning += $SettingsPath | Write-Warning }
+    if ($warning) { $warning += $SettingsPath | Write-Warning }
     $sorted = [PSCustomObject]::new()
     Get-Content $SettingsPath | ConvertFrom-Json -PipelineVariable json |
     Get-Member -Type  NoteProperty | 
@@ -22,9 +23,9 @@ function Sort-VSCodeSettings {
     ForEach-Object {
         $addMember = @{
             InputObject = $sorted
-            Type = 'NoteProperty'
-            Name = $_.Name
-            Value = $json.$($_.Name)
+            Type        = 'NoteProperty'
+            Name        = $_.Name
+            Value       = $json.$($_.Name)
         }
         Add-Member @addMember
     }
