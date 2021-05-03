@@ -11,6 +11,40 @@ function Assert-PSVersion {
     }
 }
 
+function ConvertTo-PSSyntax {
+    <#
+    .DESCRIPTION
+    Converts JSON to the syntax you would use in a PowerShell script to create a PSObject or Hashtable. 
+    Useful for making mock objects for unit tests while you're debugging through your scripts.
+
+    .EXAMPLE
+    You're debugging your script and have an object you would like to capture and run tests on.
+    You could export as JSON, keep in a file and use as a resource but if you want to use an object inline you can use 
+      this function like this:
+    
+    $myObj | ConvertTo-JSON
+
+    .NOTES
+    Not the most efficient way of doing this, but usually only used for small objects when creating tests. Could use refactoring for efficiency and additional edge cases if being used for different purposes.
+    #>
+    [Cmdletbinding()]
+    param(
+        [Parameter(Mandatory, ValueFromPipeline)]
+        [System.Runtime.Serialization.ISerializable]$InputObject
+    )
+    process {
+
+        $json = ($InputObject | Test-JSON -ErrorAction SilentlyContinue ) ? ($InputObject | ConvertFrom-Json | ConvertTo-Json -Depth 100) : ($InputObject | ConvertTo-JSON -Depth 100)
+        $json |
+        Foreach-Object { $_ -replace ",(?=`n)", "" }|
+        ForEach-Object { $_ -replace "{(?=`n)", "@{" } |
+        ForEach-Object { $_ -replace "\[(?=`n)", "@(" } |
+        ForEach-Object { $_ -replace "](?=`n)", ")" } |
+        ForEach-Object { $_ -replace ":", " =" } |
+        Write-Output
+    }
+}
+
 function Invoke-SortVSCodeSettings {
     [Cmdletbinding()]
     param(
@@ -47,33 +81,8 @@ function Invoke-SortVSCodeSettings {
     }
 }
 
-function Convert-JsonToPSSyntax {
-    <#
-    .DESCRIPTION
-    .NOTES
-    Probably not the most efficient way of doing this, but I'm usually only using this for small objects when I'm creating tests. 
-    You might call it the lazy way...
-    #>
-    [Cmdletbinding()]
-    param(
-        [Parameter(Mandatory, ValueFromPipeline)]
-        [ValidateScript( { Test-Json $_ })]
-        $Json
-    )
-    process {
-        # lazy way to format json with all collection separators at end of lines
-        $json = $json | ConvertFrom-Json | ConvertTo-Json -Depth 100
-        $Json -replace ",(?=`n)", '' |
-        ForEach-Object { $_ -replace '{', '@{' } |
-        ForEach-Object { $_ -replace '\[', '@(' } |
-        ForEach-Object { $_ -replace ']', ')' } |
-        ForEach-Object { $_ -replace ':', ' =' } |
-        Write-Output
-    }
-}
-
 Export-ModuleMember -Function (
     'Assert-PSVersion',
     'Invoke-SortVSCodeSettings',
-    'Convert-JsonToPSSyntax'
+    'ConvertTo-PSSyntax'
 )
