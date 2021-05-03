@@ -1,12 +1,21 @@
 function Assert-PSVersion {
+    <#
+    .SYNOPSIS
+    Validate the PowerShell version
+    #>
     [Cmdletbinding()]
     param(
         [Parameter(Mandatory)]
-        $MinimumVersion
+        [string]$MinimumVersion,
+
+        [Parameter()]
+        [Version]
+        $CurrentVersion = $PSVersionTable.PSVersion
     )   
     process {
-        if ($PSVersionTable.PSVersion -lt $MinimumVersion) {
-            throw "PSVersion must be at least $MinimumVersion to use this function"
+        [Version]$min = $MinimumVersion.contains('.') ? $MinimumVersion : $MinimumVersion + '.0'
+        if ($CurrentVersion -lt $min) {
+            throw "PSVersion must be at least $min to use this function"
         }
     }
 }
@@ -34,9 +43,12 @@ function ConvertTo-PSSyntax {
     )
     process {
 
-        $json = ($InputObject | Test-JSON -ErrorAction SilentlyContinue ) ? ($InputObject | ConvertFrom-Json | ConvertTo-Json -Depth 100) : ($InputObject | ConvertTo-JSON -Depth 100)
+        $json = ($InputObject | Test-JSON -ErrorAction SilentlyContinue ) ? 
+            ($InputObject | ConvertFrom-Json | ConvertTo-Json -Depth 100) : 
+            ($InputObject | ConvertTo-JSON -Depth 100)
+
         $json |
-        Foreach-Object { $_ -replace ",(?=`n)", "" }|
+        Foreach-Object { $_ -replace ",(?=`n)", "" } |
         ForEach-Object { $_ -replace "{(?=`n)", "@{" } |
         ForEach-Object { $_ -replace "\[(?=`n)", "@(" } |
         ForEach-Object { $_ -replace "](?=`n)", ")" } |
@@ -46,6 +58,11 @@ function ConvertTo-PSSyntax {
 }
 
 function Invoke-SortVSCodeSettings {
+    <#
+    .SYNOPSIS
+    Alphabetically sort VSCode's settings json file in ascending or descending order
+
+    #>
     [Cmdletbinding()]
     param(
         [Parameter()]
