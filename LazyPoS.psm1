@@ -103,3 +103,66 @@ Export-ModuleMember -Function (
     'Invoke-SortVSCodeSettings',
     'ConvertTo-PSSyntax'
 )
+
+function Set-ClipboardWithNewGuid {
+    [Cmdletbinding()]
+    [Alias('guid')]
+    param()
+    New-Guid | Set-Clipboard
+}
+
+function Get-RandomChar {
+    [Cmdletbinding()]
+    param(
+        [Alias("Upper")]
+        [Parameter(ParameterSetName='Uppercase')]
+        [switch] $Uppercase,
+
+        [Alias("Lower")]
+        [Parameter(ParameterSetName='Lowercase')]
+        [switch] $Lowercase
+    )
+    Begin {
+        $alphaASCIIRangeUppercase = (65..90)
+        $alphaASCIIRangeLowercase = (97..122)
+    }
+    Process {
+        if($Uppercase){
+            return $alphaASCIIRangeUppercase | Get-Random | % { [char]$_ }
+        }
+        if($Lowercase){
+            return $alphaASCIIRangeLowercase | Get-Random | % { [char]$_ }
+        }
+    }
+}
+
+function Invoke-RandomizeClipboard {
+    [OutputType([System.Void])]
+    [Alias("cliprand")]
+    [Cmdletbinding()]
+    param()
+    $clipboardContent = Get-Clipboard
+    $randomized = New-Object -TypeName 'char[]' -ArgumentList $clipboardContent.Length
+    $clipboardContent.ToCharArray() | Foreach-Object {$i = 0}{
+        switch -Regex -CaseSensitive ($_) {
+            '[A-Z]' { 
+                $randomized[$i] = Get-RandomChar -Upper 
+                break
+            }
+            '[a-z]' { 
+                $randomized[$i] = Get-RandomChar -Lower 
+                break
+            }
+            '[0-9]' { 
+                $randomized[$i] = [char][string](Get-Random -Minimum 0 -Maximum 9)
+                break
+            }
+            default {
+                $randomized[$i] = $_
+                break
+            }
+        }
+        $i++
+    }
+    [string]::new($randomized) | Set-Clipboard
+}
