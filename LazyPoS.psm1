@@ -98,12 +98,6 @@ function Invoke-SortVSCodeSettings {
     }
 }
 
-Export-ModuleMember -Function (
-    'Assert-PSVersion',
-    'Invoke-SortVSCodeSettings',
-    'ConvertTo-PSSyntax'
-)
-
 function Set-ClipboardWithNewGuid {
     [Cmdletbinding()]
     [Alias('guid')]
@@ -166,3 +160,13 @@ function Invoke-RandomizeClipboard {
     }
     [string]::new($randomized) | Set-Clipboard
 }
+
+Export-ModuleMember -Function (
+    'Set-ClipboardWithNewGuid',
+    'Get-RandomChar',
+    'Invoke-RandomizeClipboard',
+    'Assert-PSVersion',
+    'Invoke-SortVSCodeSettings',
+    'ConvertTo-PSSyntax'
+)
+
