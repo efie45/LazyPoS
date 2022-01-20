@@ -1,4 +1,6 @@
-function Assert-PSVersion {
+﻿function Assert-PSVersion {
+    #TODO: Documentation
+    #TODO: Unit Tests
     <#
     .SYNOPSIS
     Validate the PowerShell version
@@ -9,9 +11,8 @@ function Assert-PSVersion {
         [string]$MinimumVersion,
 
         [Parameter()]
-        [Version]
-        $CurrentVersion = $PSVersionTable.PSVersion
-    )   
+        [Version]$CurrentVersion = $PSVersionTable.PSVersion
+    )
     Process {
         [Version]$min = $MinimumVersion.contains('.') ? $MinimumVersion : $MinimumVersion + '.0'
         if ($CurrentVersion -lt $min) {
@@ -21,20 +22,22 @@ function Assert-PSVersion {
 }
 
 function ConvertTo-PSSyntax {
+    #TODO: Documentation
+    #TODO: Unit Tests
     <#
     .DESCRIPTION
-    Converts JSON to the syntax you would use in a PowerShell script to create a PSObject or Hashtable. 
+    Converts JSON to the syntax you would use in a PowerShell script to create a PSObject or Hashtable.
     Useful for making mock objects for unit tests while you're debugging through your scripts.
 
     .EXAMPLE
     You're debugging your script and have an object you would like to capture and run tests on.
-    You could export as JSON, keep in a file and use as a resource but if you want to use an object inline you can use 
+    You could export as JSON, keep in a file and use as a resource but if you want to use an object inline you can use
       this function like this:
-    
+
     $myObj | ConvertTo-JSON
 
     .NOTES
-    Not the most efficient way of doing this, but usually only used for small objects when creating tests. 
+    Not the most efficient way of doing this, but usually only used for small objects when creating tests.
     Could use refactoring for efficiency and additional edge cases if being used for different purposes.
     #>
     [Cmdletbinding()]
@@ -44,8 +47,8 @@ function ConvertTo-PSSyntax {
     )
     Process {
 
-        $json = ($InputObject | Test-Json -ErrorAction SilentlyContinue) ? 
-        ($InputObject | ConvertFrom-Json | ConvertTo-Json -Depth 100) : 
+        $json = ($InputObject | Test-Json -ErrorAction SilentlyContinue) ?
+        ($InputObject | ConvertFrom-Json | ConvertTo-Json -Depth 100) :
         ($InputObject | ConvertTo-Json -Depth 100)
 
         $json |
@@ -58,7 +61,9 @@ function ConvertTo-PSSyntax {
     }
 }
 
-function Invoke-SortVSCodeSettings {
+function Invoke-SortVSCodeSetting {
+    #TODO: Documentation
+    #TODO: Unit Tests
     <#
     .SYNOPSIS
     Alphabetically sort VSCode's settings json file in ascending or descending order
@@ -84,8 +89,8 @@ function Invoke-SortVSCodeSettings {
         if ($warning) { $warning + $SettingsPath | Write-Warning }
         $sorted = [PSCustomObject]::new()
         Get-Content $SettingsPath | ConvertFrom-Json -PipelineVariable json |
-            Get-Member -Type  NoteProperty | 
-            Sort-Object Name -Descending:$Descending | 
+            Get-Member -Type  NoteProperty |
+            Sort-Object Name -Descending:$Descending |
             ForEach-Object {
                 $addMember = @{
                     InputObject = $sorted
@@ -100,6 +105,8 @@ function Invoke-SortVSCodeSettings {
 }
 
 function Set-ClipboardWithNewGuid {
+    #TODO: Documentation
+    #TODO: Unit Tests
     [Cmdletbinding()]
     [Alias('guid')]
     Param()
@@ -107,6 +114,8 @@ function Set-ClipboardWithNewGuid {
 }
 
 function Get-RandomChar {
+    #TODO: Documentation
+    #TODO: Unit Tests
     [Cmdletbinding()]
     Param(
         [Alias('Upper')]
@@ -132,6 +141,8 @@ function Get-RandomChar {
 }
 
 function Invoke-RandomizeClipboard {
+    #TODO: Documentation
+    #TODO: Unit Tests
     [OutputType([System.Void])]
     [Alias('cliprand')]
     [Cmdletbinding()]
@@ -140,15 +151,15 @@ function Invoke-RandomizeClipboard {
     $randomized = New-Object -TypeName 'char[]' -ArgumentList $clipboardContent.Length
     $clipboardContent.ToCharArray() | ForEach-Object { $i = 0 } {
         switch -Regex -CaseSensitive ($_) {
-            '[A-Z]' { 
-                $randomized[$i] = Get-RandomChar -Upper 
+            '[A-Z]' {
+                $randomized[$i] = Get-RandomChar -Upper
                 break
             }
-            '[a-z]' { 
-                $randomized[$i] = Get-RandomChar -Lower 
+            '[a-z]' {
+                $randomized[$i] = Get-RandomChar -Lower
                 break
             }
-            '[0-9]' { 
+            '[0-9]' {
                 $randomized[$i] = [char][string](Get-Random -Minimum 0 -Maximum 9)
                 break
             }
@@ -170,4 +181,3 @@ Export-ModuleMember -Function (
     'Invoke-SortVSCodeSettings',
     'ConvertTo-PSSyntax'
 )
-
