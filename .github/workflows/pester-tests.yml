@@ -15,12 +15,3 @@ jobs:
       run: |
         Invoke-Pester -Path tests
       shell: pwsh
-  
-  test-posh:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Run Pester tests (PowerShell)
-      run: |
-        Invoke-Pester -Path "tests"
-      shell: powershell
