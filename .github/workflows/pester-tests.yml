@@ -1,0 +1,25 @@
+name: Pester
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  test-pwsh:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run Pester tests (pwsh)
+      run: |
+        Invoke-Pester
+      shell: pwsh
+  
+  test-posh:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run Pester tests (PowerShell)
+      run: |
+        Invoke-Pester -Path "tests"
+      shell: powershell
