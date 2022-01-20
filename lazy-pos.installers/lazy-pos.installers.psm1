@@ -120,3 +120,17 @@ function Install-VSCodeExtensions {
     }
 }
 
+function Install-NewWindowsEnvironment {
+    #TODO: Documentation
+    #TODO: Unit Tests
+    [Cmdletbinding()]
+    Param ()
+    Process {
+        Install-WingetPrograms
+        Install-Choco
+        Install-ChocoPrograms
+        Install-MiscPrograms
+        Install-PowerShellModules       
+    }
+}
+
