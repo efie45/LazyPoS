@@ -1,5 +1,5 @@
 BeforeAll {
-    Import-Module (Resolve-Path (Join-Path $PSScriptRoot .. lazy-pos.misc lazy-pos.misc.psm1 )) -Verbose
+    Import-Module (Resolve-Path (Join-Path $PSScriptRoot .. lazy-pos.misc lazy-pos.misc.psm1 ))
 }
 
 Describe 'Lazy PoS Unit Tests' {
@@ -17,15 +17,19 @@ Describe 'Lazy PoS Unit Tests' {
         }
     }
 
-    # Context 'Convert-JsonToPSSyntax' {
-    #     <#
-    #         BUG
-    #         Needs to pipe to should operator
-    #         Isn't working as expected
-    #     #>
-    #     It 'Creates the correct object from example JSON' {
-    #         $json = Get-Content './example.json' -Raw
-    #         $json | ConvertTo-PSSyntax | Write-Host
-    #     }
-    # }
+    Context 'Convert-JsonToPSSyntax' {
+        <#
+            BUG
+            Needs to pipe to should operator
+            Isn't working as expected
+        # #>
+        # It 'Creates the correct object from example JSON' {
+        #     $json = Get-Content './example.json' -Raw
+        #     $json | ConvertTo-PSSyntax | Write-Host
+        # }
+
+        It 'Is a FAIL' {
+            $false | Should -eq $true
+        }
+    }
 }

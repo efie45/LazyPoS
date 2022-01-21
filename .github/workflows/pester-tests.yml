@@ -1,6 +1,7 @@
 name: Pester
 on:
   workflow_dispatch:
+  push:
   pull_request:
     branches: [ main ]
 jobs:
@@ -13,5 +14,16 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run Pester tests (pwsh)
       run: |
-        Invoke-Pester -Path tests
+        $config = [PesterConfiguration]@{
+          Run = @{ 
+            PassThru = $true 
+          }
+          CodeCoverage = @{ 
+            Enabled = $true
+          }
+          TestResult = @{
+            Enabled = $true
+          }
+        }
+        Invoke-Pester -Configuration $config
       shell: pwsh
