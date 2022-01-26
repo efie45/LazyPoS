@@ -27,9 +27,5 @@ Describe 'Lazy PoS Unit Tests' {
         #     $json = Get-Content './example.json' -Raw
         #     $json | ConvertTo-PSSyntax | Write-Host
         # }
-
-        It 'Is a FAIL' {
-            $false | Should -eq $true
-        }
     }
 }
