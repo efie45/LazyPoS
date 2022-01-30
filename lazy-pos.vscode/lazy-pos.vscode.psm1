@@ -1,17 +1,18 @@
 ﻿function Get-VsCodeSettingsPath {
     #TODO: Documentation
     #TODO: Unit Tests
+    [OutputType([string])]
     [Cmdletbinding()]
     Param ()
     Process {
         if ($IsMac) {
-            return (Join-Path $HOME Library 'Application Support' Code User settings.json)
+            return "$HOME/Library/Application Support/Code User/settings.json"
         }
         if ($IsWindows) {
-            return (Join-Path $env:APPDATA Code User settings.json)
+            return "$ENV:APPDATA/Code/User/settings.json"
         }
         if ($IsLinux) {
-            return (Join-Path $HOME .config Code User settings.json)
+            return "$HOME/.config/Code/User/settings.json"
         }
     }
 }

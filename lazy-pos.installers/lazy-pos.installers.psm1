@@ -1,6 +1,6 @@
-using namespace Diagnostics.CodeAnalysis
+﻿using namespace Diagnostics.CodeAnalysis
 
-function Install-WingetPrograms() {
+function Install-WingetProgram() {
     #TODO: Documentation
     #TODO: Unit Tests
     [Cmdletbinding()]
@@ -8,7 +8,7 @@ function Install-WingetPrograms() {
     Begin {
 
         $defaultOptions = '--silent --accept-package-agreements --accept-source-agreements'
-        $progList = @(  
+        $progList = @(
               ('Microsoft.VisualStudioCode', $defaultOptions)
             , ('Google.Chrome.Dev', $defaultOptions)
             , ('Mozilla.Firefox.DeveloperEdition', $defaultOptions)
@@ -92,13 +92,13 @@ function Install-ChocoProgram {
     }
 }
 
-function Install-PowerShellModules {
+function Install-PowerShellModule {
     #TODO: Documentation
     #TODO: Unit Tests
     [Cmdletbinding()]
     Param ()
     Process {
-        
+
         Install-Module oh-my-posh -Force
         Install-Module PSScriptAnalyzer -Force
         Install-Module PSReadline -Force
@@ -114,7 +114,7 @@ function Install-PowerShellModules {
     }
 }
 
-function Install-VsCodeExtensions {
+function Install-VsCodeExtension {
     #TODO: Documentation
     #TODO: Unit Tests
     [Cmdletbinding()]
@@ -153,13 +153,13 @@ function Install-NewWindowsEnvironment {
         Install-Choco
         Install-ChocoPrograms
         Install-MiscPrograms
-        Install-PowerShellModules       
+        Install-PowerShellModules
     }
 }
 
-# function Install-Font {  
+# function Install-Font {
 #     <#
-        
+
 #         TODO: Documentation
 #         TODO: Unit Tests
 #         TODO: Modify with standards
@@ -173,72 +173,72 @@ function Install-NewWindowsEnvironment {
 
 #     #>
 #     [Cmdletbinding()]
-#     Param ( 
+#     Param (
 #         [Parameter(Mandatory = $true)]
 #         [ValidateNotNullOrEmpty()]
 #         [System.IO.FileInfo]$Path
 #     )
 
 #     $fontFile = Get-Item -Path $Path
-      
-#     # Get Font Name from the File's Extended Attributes
-#     $oShell = New-Object -com shell.application  
-#     $Folder = $oShell.namespace($FontFile.DirectoryName)  
-#     $Item = $Folder.Items().Item($FontFile.Name)  
-#     $FontName = $Folder.GetDetailsOf($Item, 21)  
 
-#     try {  
-#         $fontName += switch ($fontFile.Extension) {  
-#             '.ttf' { '(TrueType)' } 
-#             '.otf' { '(OpenType)' }  
-#         }  
-#         Write-Verbose "Copying $($FontFile.Name)....."  
+#     # Get Font Name from the File's Extended Attributes
+#     $oShell = New-Object -com shell.application
+#     $Folder = $oShell.namespace($FontFile.DirectoryName)
+#     $Item = $Folder.Items().Item($FontFile.Name)
+#     $FontName = $Folder.GetDetailsOf($Item, 21)
+
+#     try {
+#         $fontName += switch ($fontFile.Extension) {
+#             '.ttf' { '(TrueType)' }
+#             '.otf' { '(OpenType)' }
+#         }
+#         Write-Verbose "Copying $($FontFile.Name)....."
 #         Copy-Item -Path $fontFile.FullName -Destination "C:\Windows\Fonts\$($FontFile.Name)" -Force -Verbose -ErrorAction Stop
 
-#         #Test if font registry entry exists  
-#         If ($null -ne (Get-ItemProperty -Name $FontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts' -ErrorAction SilentlyContinue)) {  
-#             #Test if the entry matches the font file name  
-#             if ((Get-ItemPropertyValue -Name $fontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts') -eq $fontFile.Name) {  
-#                 Write-Verbose "Adding $fontName to the registry....." 
+#         #Test if font registry entry exists
+#         If ($null -ne (Get-ItemProperty -Name $FontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts' -ErrorAction SilentlyContinue)) {
+#             #Test if the entry matches the font file name
+#             if ((Get-ItemPropertyValue -Name $fontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts') -eq $fontFile.Name) {
+#                 Write-Verbose "Adding $fontName to the registry....."
 #             }
-#             else {  
-#                 $AddKey = $true  
-#                 Remove-ItemProperty -Name $FontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts' -Force  
-#                 Write-Host ('Adding' + [char]32 + $FontName + [char]32 + 'to the registry.....') -NoNewline  
-#                 New-ItemProperty -Name $FontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts' -PropertyType string -Value $FontFile.Name -Force -ErrorAction SilentlyContinue | Out-Null  
-#                 If ((Get-ItemPropertyValue -Name $FontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts') -eq $FontFile.Name) {  
-#                     Write-Host ('Success') -ForegroundColor Yellow  
+#             else {
+#                 $AddKey = $true
+#                 Remove-ItemProperty -Name $FontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts' -Force
+#                 Write-Host ('Adding' + [char]32 + $FontName + [char]32 + 'to the registry.....') -NoNewline
+#                 New-ItemProperty -Name $FontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts' -PropertyType string -Value $FontFile.Name -Force -ErrorAction SilentlyContinue | Out-Null
+#                 If ((Get-ItemPropertyValue -Name $FontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts') -eq $FontFile.Name) {
+#                     Write-Host ('Success') -ForegroundColor Yellow
 #                 }
-#                 else {  
-#                     Write-Host ('Failed') -ForegroundColor Red  
-#                 }  
-#                 $AddKey = $false  
-#             }  
-#         }
-#         else {  
-#             $AddKey = $true  
-#             Write-Host ('Adding' + [char]32 + $FontName + [char]32 + 'to the registry.....') -NoNewline  
-#             New-ItemProperty -Name $FontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts' -PropertyType string -Value $FontFile.Name -Force -ErrorAction SilentlyContinue | Out-Null  
-#             If ((Get-ItemPropertyValue -Name $FontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts') -eq $FontFile.Name) {  
-#                 Write-Host ('Success') -ForegroundColor Yellow  
+#                 else {
+#                     Write-Host ('Failed') -ForegroundColor Red
+#                 }
+#                 $AddKey = $false
 #             }
-#             else {  
-#                 Write-Host ('Failed') -ForegroundColor Red  
-#             }  
-#             $AddKey = $false  
-#         }  
-           
+#         }
+#         else {
+#             $AddKey = $true
+#             Write-Host ('Adding' + [char]32 + $FontName + [char]32 + 'to the registry.....') -NoNewline
+#             New-ItemProperty -Name $FontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts' -PropertyType string -Value $FontFile.Name -Force -ErrorAction SilentlyContinue | Out-Null
+#             If ((Get-ItemPropertyValue -Name $FontName -Path 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts') -eq $FontFile.Name) {
+#                 Write-Host ('Success') -ForegroundColor Yellow
+#             }
+#             else {
+#                 Write-Host ('Failed') -ForegroundColor Red
+#             }
+#             $AddKey = $false
+#         }
+
 #     }
-#     catch {  
-#         If ($Copy -eq $true) {  
-#             Write-Host ('Failed') -ForegroundColor Red  
-#             $Copy = $false  
-#         }  
-#         If ($AddKey -eq $true) {  
-#             Write-Host ('Failed') -ForegroundColor Red  
-#             $AddKey = $false  
-#         }  
-#         Write-Warning $_.exception.message  
-#     }  
+#     catch {
+#         If ($Copy -eq $true) {
+#             Write-Host ('Failed') -ForegroundColor Red
+#             $Copy = $false
+#         }
+#         If ($AddKey -eq $true) {
+#             Write-Host ('Failed') -ForegroundColor Red
+#             $AddKey = $false
+#         }
+#         Write-Warning $_.exception.message
+#     }
 #     Write-Host
-# }  
+# }
