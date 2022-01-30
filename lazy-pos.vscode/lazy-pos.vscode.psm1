@@ -1,4 +1,4 @@
-function Get-VsCodeSettingsPath {
+﻿function Get-VsCodeSettingsPath {
     #TODO: Documentation
     #TODO: Unit Tests
     [Cmdletbinding()]
@@ -16,14 +16,14 @@ function Get-VsCodeSettingsPath {
     }
 }
 
-function Get-VsCodeSettings {
+function Get-VsCodeSetting {
     #TODO: Documentation
     #TODO: Unit Tests
     [Cmdletbinding()]
     Param (
         [Parameter(ParameterSetName = 'AsObject')]
         [bool]$AsObject = $true,
-        
+
         [Parameter(ParameterSetName = 'AsJson')]
         [switch]$AsJsonString,
 
@@ -34,7 +34,7 @@ function Get-VsCodeSettings {
         [System.IO.FilePath]$Path = (Get-VsCodeSettingsPath)
     )
     Process {
-        if ($AsPath) { $Path | Write-Output } 
+        if ($AsPath) { $Path | Write-Output }
         $json = $path | Get-Item | Get-Content
         if ($AsJsonString) { $json | Write-Output }
         if ($AsObject) { $json | ConvertFrom-Json }

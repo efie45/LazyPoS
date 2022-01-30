@@ -104,15 +104,6 @@ function Invoke-SortVSCodeSetting {
     }
 }
 
-function Set-ClipboardWithNewGuid {
-    #TODO: Documentation
-    #TODO: Unit Tests
-    [Cmdletbinding()]
-    [Alias('guid')]
-    Param()
-    New-Guid | Set-Clipboard
-}
-
 function Get-RandomChar {
     #TODO: Documentation
     #TODO: Unit Tests
@@ -149,7 +140,8 @@ function Invoke-RandomizeClipboard {
     Param()
     $clipboardContent = Get-Clipboard
     $randomized = New-Object -TypeName 'char[]' -ArgumentList $clipboardContent.Length
-    $clipboardContent.ToCharArray() | ForEach-Object { $i = 0 } {
+    $i = 0
+    $clipboardContent.ToCharArray() | ForEach-Object {
         switch -Regex -CaseSensitive ($_) {
             '[A-Z]' {
                 $randomized[$i] = Get-RandomChar -Upper

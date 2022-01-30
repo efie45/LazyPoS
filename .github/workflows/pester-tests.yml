@@ -24,9 +24,11 @@ jobs:
             }
             CodeCoverage = @{ 
               Enabled = $true
+              OutputPath = "ci-cd/coverage.xml"
             }
             TestResult = @{
               Enabled = $true
+              OutputPath = "ci-cd/testResults.xml"
             }
           }
           Invoke-Pester -Configuration $config
@@ -36,4 +38,4 @@ jobs:
         with:
           name: BuildName
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: coverage.xml
+          file: ci-cd/coverage.xml
