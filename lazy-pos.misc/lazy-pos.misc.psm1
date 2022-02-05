@@ -208,10 +208,12 @@ function Get-RandomAlpha {
     [OutputType([char])]
     [Cmdletbinding()]
     Param(
+        # Get a random Uppercase letter
         [Alias('Upper')]
         [Parameter(ParameterSetName = 'Uppercase')]
         [switch] $Uppercase,
 
+        # Get a random lowercase letter
         [Alias('Lower')]
         [Parameter(ParameterSetName = 'Lowercase')]
         [switch] $Lowercase

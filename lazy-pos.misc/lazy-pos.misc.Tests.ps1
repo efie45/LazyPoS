@@ -20,7 +20,19 @@ Describe 'Lazy PoS Unit Tests' {
             { Assert-PSVersion -MinimumVersion $_ -CurrentVersion $([Version]'7.1.0') } | Should -Not -Throw
         }
     }
+    Context 'Get-RandomAlpha' -Tag unit, misc {
+        It 'Should get a random character' -ForEach (1..5) {
+            $char = Get-RandomAlpha -Uppercase
+            $char | Should -BeOfType ([char])
+            $char | Should -MatchExactly '[A-Z]'
+        }
 
+        It 'Should get a random character' -ForEach (1..5) {
+            $char = Get-RandomAlpha -Lowercase
+            $char | Should -BeOfType ([char])
+            $char | Should -MatchExactly '[a-z]'
+        }
+    }
     Context 'ConvertTo-Version' {
         It 'Should throw when non digits are provided' {
             { '1.t1' | ConvertTo-Version } | Should -Throw -ExceptionType ([ArgumentException])
