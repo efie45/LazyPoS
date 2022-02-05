@@ -1,5 +1,10 @@
 ﻿using namespace Diagnostics.CodeAnalysis
 
+#FEATURE: Firefox Extensions
+<#
+    JWT Debugger
+#>
+
 function Install-WingetProgram() {
     #TODO: Documentation
     #TODO: Unit Tests
@@ -9,30 +14,30 @@ function Install-WingetProgram() {
 
         $defaultOptions = '--silent --accept-package-agreements --accept-source-agreements'
         $progList = @(
-              ('Microsoft.VisualStudioCode', $defaultOptions)
-            , ('Google.Chrome.Dev', $defaultOptions)
-            , ('Mozilla.Firefox.DeveloperEdition', $defaultOptions)
-            , ('Microsoft.WindowsTerminal.Preview', $defaultOptions)
-            , ('Microsoft.PowerShell', $defaultOptions)
-            , ('JanDeDobbeleer.OhMyPosh', $defaultOptions)
-            , ('Git.Git', $defaultOptions)
-            , ('GitHub.GitLFS', $defaultOptions)
-            , ('GitHub.GitHubDesktop.Beta', $defaultOptions)
-            , ('Github.cli', $defaultOptions)
-            , ('Postman.Postman.Canary', $defaultOptions)
-            , ('JetBrains.Rider.EAP', $defaultOptions)
-            , ('Dropbox.Dropbox', $defaultOptions)
-            , ('Bitwarden.Bitwarden', $defaultOptions)
-            , ('Valve.Steam', $defaultOptions)
-            , ('Spotify.Spotify', $defaultOptions)
-            , ('Greenshot.Greenshot', $defaultOptions)
-            , ('Microsoft.dotnetRuntime.6-x64', $defaultOptions)
-            , ('7zip.7zip', $defaultOptions)
-            , ('VideoLAN.VLC', $defaultOptions)
-            , ('Paint.NET', $defaultOptions)
-            , ('Discord.Discord', $defaultOptions)
+              ('7zip.7zip', $defaultOptions)
             , ('Appest.TickTick', $defaultOptions)
+            , ('Bitwarden.Bitwarden', $defaultOptions)
+            , ('Discord.Discord', $defaultOptions)
+            , ('Dropbox.Dropbox', $defaultOptions)
+            , ('Git.Git', $defaultOptions)
+            , ('Github.cli', $defaultOptions)
+            , ('GitHub.GitHubDesktop.Beta', $defaultOptions)
+            , ('GitHub.GitLFS', $defaultOptions)
+            , ('Google.Chrome.Dev', $defaultOptions)
+            , ('Greenshot.Greenshot', $defaultOptions)
+            , ('JanDeDobbeleer.OhMyPosh', $defaultOptions)
+            , ('JetBrains.Rider.EAP', $defaultOptions)
             , ('Klocman.BulkCrapUninstaller', $defaultOptions)
+            , ('Microsoft.dotnetRuntime.6-x64', $defaultOptions)
+            , ('Microsoft.PowerShell', $defaultOptions)
+            , ('Microsoft.WindowsTerminal.Preview', $defaultOptions)
+            , ('Microsoft.VisualStudioCode', $defaultOptions)
+            , ('Mozilla.Firefox.DeveloperEdition', $defaultOptions)
+            , ('Paint.NET', $defaultOptions)
+            , ('Postman.Postman.Canary', $defaultOptions)
+            , ('Spotify.Spotify', $defaultOptions)
+            , ('Valve.Steam', $defaultOptions)
+            , ('VideoLAN.VLC', $defaultOptions)
         )
     }
     Process {
@@ -108,7 +113,8 @@ function Install-PowerShellModule {
         Add-GitPoshToProfile
 
         # Remove version 3 of Pester. Gist script maintained by Pester devs.
-        & ((New-Object System.Net.WebClient).DownloadString('https://gist.github.com/nohwnd/5c07fe62c861ee563f69c9ee1f7c9688/raw'))
+        & ((New-Object System.Net.WebClient).DownloadString(
+                'https://gist.github.com/nohwnd/5c07fe62c861ee563f69c9ee1f7c9688/raw'))
         Install-Module Pester
 
     }

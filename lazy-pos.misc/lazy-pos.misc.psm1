@@ -60,7 +60,8 @@ function ConvertTo-Version {
     1      0      -1     -1
 
     .EXAMPLE
-
+    >> "1.1.2" | ConvertTo-Version
+    >>
 
     .NOTES
     Note that a Version type that doesn't specify a build or revision is considered 'less than'
@@ -195,10 +196,16 @@ function Invoke-SortVSCodeSetting {
     }
 }
 
-function Get-RandomChar {
-    #TODO: Documentation
-    #TODO: Unit Tests
-    [Output([char])]
+function Get-RandomAlpha {
+    <#
+    .SYNOPSIS
+    Helper function to get random alpha characters.
+
+    .DESCRIPTION
+    Gets a random ASCII based character based on input parameters.
+    For options see ParameterSets.
+    #>
+    [OutputType([char])]
     [Cmdletbinding()]
     Param(
         [Alias('Upper')]
@@ -236,11 +243,11 @@ function Invoke-RandomizeClipboard {
     $clipboardContent.ToCharArray() | ForEach-Object {
         switch -Regex -CaseSensitive ($_) {
             '[A-Z]' {
-                $randomized[$i] = Get-RandomChar -Upper
+                $randomized[$i] = Get-RandomAlpha -Upper
                 break
             }
             '[a-z]' {
-                $randomized[$i] = Get-RandomChar -Lower
+                $randomized[$i] = Get-RandomAlpha -Lower
                 break
             }
             '[0-9]' {
