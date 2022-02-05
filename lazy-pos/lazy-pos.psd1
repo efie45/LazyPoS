@@ -84,10 +84,10 @@
             # Tags = @()
 
             # A URL to the license for this module.
-            # LicenseUri = ''
+            LicenseUri               = 'https://github.com/efie45/lazy-pos/blob/main/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri = 'github.com/efie45/lazy-pos'
+            ProjectUri               = 'https://github.com/efie45/lazy-pos'
 
             # A URL to an icon representing this module.
             # IconUri = ''
@@ -96,10 +96,10 @@
             # ReleaseNotes = ''
 
             # Prerelease string of this module
-            Prerelease = 'alpha'
+            Prerelease               = 'alpha'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update/save
-            # RequireLicenseAcceptance = $false
+            RequireLicenseAcceptance = $false
 
             # External dependent modules of this module
             # ExternalModuleDependencies = @()
